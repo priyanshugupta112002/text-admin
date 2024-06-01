@@ -44,7 +44,7 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         
         selectedRowAt = Cuisine[indexPath.row]
 //        if(!selectedRowAt.contains(cuisine.all[indexPath.row])){
-//            selectedRowAt.append( cuisine.all[indexPath.row])
+//            selectedRowAt.append( cuisine.all[indexPath.row])gjh
 //        }
         print(selectedRowAt)
         tableView.reloadData()
