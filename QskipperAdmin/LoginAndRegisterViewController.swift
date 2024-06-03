@@ -75,9 +75,12 @@ class LoginAndRegisterViewController: UIViewController {
                
                 if let response = try await Networking.shared.loginUser(currentUser: currentUser) {
                     debugPrint(response)
+                     performSegue(withIdentifier: "loginSuccess", sender: nil)
+                    
                     if(DataControlller.shared.Currentuser.id != response.id){
                         DataControlller.shared.setID(id: response.id)
                     }
+                    debugPrint(DataControlller.shared.Currentuser.id)
                     
                     await MainActor.run {
                     }

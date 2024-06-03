@@ -9,33 +9,44 @@ import UIKit
 
 class All_Product_ViewController: UIViewController , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        allProduct.count
-        return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "All_Product ", for: indexPath) as! All_Product_CollectionViewCell
-//        cell.Product_Image.image = allProduct[indexPath.row].image
-//        cell.Product_Price.text = "\(allProduct[indexPath.row].price)"
-        
-        return cell
-        
-    }
+
     
 
     @IBOutlet var All_ProductCollectionView: UICollectionView!
     
     
-    override func viewDidLoad() {
+    override func viewDidLoad()  {
+        
         super.viewDidLoad()
         
-        var firstNib = UINib(nibName: "All_Product", bundle: nil)
-        All_ProductCollectionView.register(firstNib, forCellWithReuseIdentifier: "All_Product")
+        
+        async {
+            
+            do{
+                 let response = try await productApi.shared.getAllProduct()
+                debugPrint(response)
+                    DataControlller.shared.set_all_product(product: response)
+                    
+                    await MainActor.run {
+                        // Update the UI with the response
+                        self.All_ProductCollectionView.reloadData()
+
+                    }
+            
+            }
+            catch{
+                await MainActor.run {
+                    // Handle errors on the main thread
+                    print("Registration failed: \(error)")
+                }
+            }
+           
+        }
+        
+      
+        
+        var firstNib = UINib(nibName: "All_Products", bundle: nil)
+        All_ProductCollectionView.register(firstNib, forCellWithReuseIdentifier: "All_Products")
         
         All_ProductCollectionView.dataSource = self
         All_ProductCollectionView.delegate = self
@@ -44,6 +55,39 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
 
         // Do any additional setup after loading the view.
     }
+    
+    
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+      
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+       
+        debugPrint(DataControlller.shared.get_all_product.count)
+        return DataControlller.shared.get_all_product.count
+        
+        
+     
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "All_Products", for: indexPath) as! All_Product_CollectionViewCell
+//        cell.Product_Image.image = DataControlller.shared.get_all_product[indexPath.row].
+
+        cell.Product_Price.text = "\(DataControlller.shared.get_all_product[indexPath.row].product_price)"
+        cell.Product_Name.text = "\(DataControlller.shared.get_all_product[indexPath.row].product_name)"
+        
+        return cell
+        
+    }
+    
+    
+   
     
     func generateLayout () -> UICollectionViewLayout{
         
@@ -67,20 +111,6 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
     }
     
     
-    
-    
-    
-    
-    
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

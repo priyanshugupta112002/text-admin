@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 struct Product :Codable {
-    
+    var _id:String = ""
     var product_photo: UIImage? {
         didSet {
             if let image = product_photo {
@@ -32,17 +32,25 @@ struct Product :Codable {
     
     
     enum CodingKeys :String , CodingKey{
+        case _id
         case product_name
-        case product_photo64Image
         case restaurant_id
         case product_price
-        case extraTime
         case food_category
         case description
+        case availability
         
     }
 
 }
 
 
+struct ProductResponse:Codable{
+    var products:[Product]
+    
+    enum CodingKeys :String , CodingKey{
+        case products
+    }
+    
+}
 

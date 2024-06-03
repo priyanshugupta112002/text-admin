@@ -53,7 +53,15 @@ class DataControlller{
         return _product
     }
     
-    var allProduct: [Product] = []
+    private var _allProduct: [Product] = []
+    
+    
+    var get_all_product : [Product]{
+        return _allProduct
+    }
+    func set_all_product(product:[Product]){
+        _allProduct = product
+    }
     
     func set_product_name(name:String){
         _product.product_name = name

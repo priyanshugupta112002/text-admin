@@ -11,5 +11,6 @@ class All_Product_CollectionViewCell: UICollectionViewCell {
     
     @IBOutlet var Product_Image: UIImageView!
     @IBOutlet var Product_Price: UILabel!
+    @IBOutlet var Product_Name: UILabel!
     
 }

@@ -20,8 +20,15 @@
                         <rect key="frame" x="9" y="14" width="183" height="105"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QRp-br-KAO">
-                        <rect key="frame" x="74" y="145" width="52" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QRp-br-KAO">
+                        <rect key="frame" x="132" y="142" width="52" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KPb-gB-Yn1">
+                        <rect key="frame" x="9" y="142" width="52" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
@@ -32,9 +39,10 @@
             <size key="customSize" width="197" height="198"/>
             <connections>
                 <outlet property="Product_Image" destination="f6h-au-ncK" id="Uh3-nG-RAS"/>
+                <outlet property="Product_Name" destination="KPb-gB-Yn1" id="cWX-9r-Pcf"/>
                 <outlet property="Product_Price" destination="QRp-br-KAO" id="qEe-El-iz9"/>
             </connections>
-            <point key="canvasLocation" x="-39.694656488549619" y="-91.197183098591552"/>
+            <point key="canvasLocation" x="-34" y="-92"/>
         </collectionViewCell>
     </objects>
 </document>

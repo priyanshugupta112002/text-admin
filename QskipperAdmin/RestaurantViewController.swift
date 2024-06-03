@@ -80,7 +80,7 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+//        Product_Description.placeholder = "Enter The Description Of The Product"
         Restaurant_Cusinie.delegate = self
         Restaurant_Cusinie.dataSource = self
         

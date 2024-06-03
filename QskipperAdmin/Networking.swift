@@ -85,7 +85,8 @@ class Networking {
         }
         let decoder = JSONDecoder()
         let userResponse = try decoder.decode(User.self, from: data)
-//        print(userResponse)
+        print(userResponse)
+        print("ccwdcd")
         
         
         return userResponse
