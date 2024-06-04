@@ -17,6 +17,7 @@ class productApi{
     enum productApiError : Error , LocalizedError{
         case productNotFound
         case ImageNotFound
+        case productCanNotUpdated
     }
     
     
@@ -65,7 +66,37 @@ class productApi{
         
     }
     
-    func updateImformation(){
+  
+    func updateImformation(currentproduct:Product) async throws {
+        let registerUrl = baseUrl.appendingPathComponent("update-photo")
+        var request = URLRequest(url:registerUrl)
+        var item = currentproduct
+        request.httpMethod = "POST"
+        
+        request.setValue("application/json", forHTTPHeaderField:  "Content-Type")
+      
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try? jsonEncoder.encode(item)
+        request.httpBody = jsonData
+        
+        let(data , response) = try await URLSession.shared.data(for: request)
+        
+        
+        if let string = String(data: data, encoding: .utf8)
+        {
+           debugPrint(string)
+        }
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 202 else{
+            
+            throw productApiError.productCanNotUpdated
+        }
+        let decoder = JSONDecoder()
+        let userResponse = try decoder.decode(User.self, from: data)
+        print(userResponse)
+        print("ccwdcd")
+
         
     }
 
