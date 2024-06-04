@@ -108,8 +108,7 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        debugPrint("Efwefewf")
-        debugPrint(restaurant)
+
         
         let jsonEncoder = JSONEncoder()
         let jsonData = try? jsonEncoder.encode(restaurant)
@@ -186,18 +185,7 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
  
 
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
 
      
@@ -209,6 +197,8 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         DataControlller.shared.set_product_price(price: Int(Product_Price.text!) ?? 0)
         DataControlller.shared.set_product_category(category:"Veg" )
         DataControlller.shared.set_product_description(description: Product_Description.text ?? "Veg")
+        DataControlller.shared.set_products_resturation_id(id: DataControlller.shared.restaurant.user)
+        
         
         
         Task.init(){

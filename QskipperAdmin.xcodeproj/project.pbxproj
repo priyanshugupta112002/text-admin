@@ -12,6 +12,7 @@
 		C43F7A422C006644005D64D3 /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43F7A412C006643005D64D3 /* Restaurant.swift */; };
 		C43F7A442C006653005D64D3 /* product.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43F7A432C006653005D64D3 /* product.swift */; };
 		C43F7A4C2C00745B005D64D3 /* RestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43F7A4B2C00745B005D64D3 /* RestaurantViewController.swift */; };
+		C4B8E8012C0F2B6E00193428 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B8E8002C0F2B6E00193428 /* MainTabBarViewController.swift */; };
 		C4BE58DA2C0DCE6200C9180E /* UpdateAndDeleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BE58D92C0DCE6200C9180E /* UpdateAndDeleteViewController.swift */; };
 		C4C6C2522BFDF40A006D2171 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C6C2512BFDF40A006D2171 /* AppDelegate.swift */; };
 		C4C6C2542BFDF40A006D2171 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C6C2532BFDF40A006D2171 /* SceneDelegate.swift */; };
@@ -36,6 +37,7 @@
 		C43F7A412C006643005D64D3 /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		C43F7A432C006653005D64D3 /* product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = product.swift; sourceTree = "<group>"; };
 		C43F7A4B2C00745B005D64D3 /* RestaurantViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantViewController.swift; sourceTree = "<group>"; };
+		C4B8E8002C0F2B6E00193428 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		C4BE58D92C0DCE6200C9180E /* UpdateAndDeleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateAndDeleteViewController.swift; sourceTree = "<group>"; };
 		C4C6C24E2BFDF40A006D2171 /* QskipperAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QskipperAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4C6C2512BFDF40A006D2171 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				C4C6C2532BFDF40A006D2171 /* SceneDelegate.swift */,
 				C4C6C2552BFDF40A006D2171 /* ViewController.swift */,
 				C4C6C2572BFDF40A006D2171 /* Main.storyboard */,
+				C4B8E8002C0F2B6E00193428 /* MainTabBarViewController.swift */,
 				C4BE58D92C0DCE6200C9180E /* UpdateAndDeleteViewController.swift */,
 				C4D908172C05AD0400A3345E /* LoginAndRegisterViewController.swift */,
 				C4D9081B2C06DD0300A3345E /* Networking.swift */,
@@ -187,6 +190,7 @@
 				C4BE58DA2C0DCE6200C9180E /* UpdateAndDeleteViewController.swift in Sources */,
 				C4D9081A2C05B0E200A3345E /* user.swift in Sources */,
 				C43F7A402C006629005D64D3 /* Order.swift in Sources */,
+				C4B8E8012C0F2B6E00193428 /* MainTabBarViewController.swift in Sources */,
 				C43F7A442C006653005D64D3 /* product.swift in Sources */,
 				C4D908162C058EA000A3345E /* All_Product_ViewController.swift in Sources */,
 				C4C6C2682BFE08E1006D2171 /* ActiveOrderTableViewCell.swift in Sources */,

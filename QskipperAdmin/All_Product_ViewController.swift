@@ -78,9 +78,23 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "All_Products", for: indexPath) as! All_Product_CollectionViewCell
 //        cell.Product_Image.image = DataControlller.shared.get_all_product[indexPath.row].
-
+        Task{
+            if let url = URL(string: "https://queueskipperbackend.onrender.com/get_product_photo/\(DataControlller.shared.get_product_row(index: indexPath.row)._id)"){
+                
+                if let image = try? await productApi.shared.fetchImage(from: url){
+                    DataControlller.shared.set_product_image(index: indexPath.row, image: image)
+                    
+                    cell.Product_Image.image = image
+                    
+                    debugPrint(cell)
+                }
+            }
+                
+        }
         cell.Product_Price.text = "\(DataControlller.shared.get_all_product[indexPath.row].product_price)"
         cell.Product_Name.text = "\(DataControlller.shared.get_all_product[indexPath.row].product_name)"
+            
+
         
         return cell
         
@@ -110,7 +124,43 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
         
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "UpdateAndDelete") as! UpdateAndDeleteViewController
+        
+        
+        let product = DataControlller.shared.get_product_row(index: indexPath.row)
+        
+        viewController.currentProduct = product
+        
+        let viewNavController = UINavigationController(rootViewController: viewController)
+        
+        viewNavController.modalPresentationStyle = .fullScreen
+        present(viewNavController, animated: true, completion: nil)
+        
+        
+        
+        
+        
+        
+        
+    }
+    @IBAction func unwindtoVc(segue:UIStoryboardSegue){
+        
+        guard segue.identifier == "DoneSegue" else {
+            return
+        }
+        
+        
+    }
     
-
-
+    
+    
+    
+    
 }
+
+
+
+
+

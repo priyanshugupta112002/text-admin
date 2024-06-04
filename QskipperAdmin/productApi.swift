@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class productApi{
     
@@ -15,6 +16,7 @@ class productApi{
     
     enum productApiError : Error , LocalizedError{
         case productNotFound
+        case ImageNotFound
     }
     
     
@@ -33,15 +35,37 @@ class productApi{
               httpResponse.statusCode == 200 else{
             
             throw productApiError.productNotFound
+           
         }
         let decoder = JSONDecoder()
         let userResponse = try decoder.decode(ProductResponse.self, from: data)
 
-//        print(userResponse)
-
-        
-        
         return userResponse.products
+    }
+    
+    
+    func fetchImage(from url :URL) async throws -> UIImage{
+        
+        let(data , response) = try await URLSession.shared.data(from: url)
+        
+        if let string = String(data: data, encoding: .utf8)
+        {
+           debugPrint(string)
+        }
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else{
+            
+            throw productApiError.ImageNotFound
+        }
+        let decoder = JSONDecoder()
+        let productImage = try decoder.decode(imageResponse.self, from: data)
+
+        return productImage.product_photo.banner_photo64
+        
+    }
+    
+    func updateImformation(){
         
     }
 

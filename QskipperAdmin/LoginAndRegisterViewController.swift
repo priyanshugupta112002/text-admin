@@ -75,15 +75,23 @@ class LoginAndRegisterViewController: UIViewController {
                
                 if let response = try await Networking.shared.loginUser(currentUser: currentUser) {
                     debugPrint(response)
-                     performSegue(withIdentifier: "loginSuccess", sender: nil)
+                     //performSegue(withIdentifier: "loginSuccess", sender: nil)
+//                    let storyboard = UIStoryboard(name:"Main", bundle: nil)
+//                    let viewController = storyboard.instantiateViewController(withIdentifier: "RestaurantViewController") as! RestaurantViewController
                     
                     if(DataControlller.shared.Currentuser.id != response.id){
                         DataControlller.shared.setID(id: response.id)
+                        
                     }
-                    debugPrint(DataControlller.shared.Currentuser.id)
                     
+                    debugPrint(DataControlller.shared.Currentuser.id)
+                    navigateToHomeScreen()
                     await MainActor.run {
+                        
                     }
+                    
+//                    show(viewController, sender: self)
+                    
                 }
             } catch {
                 await MainActor.run {
@@ -94,5 +102,29 @@ class LoginAndRegisterViewController: UIViewController {
             
         }
     }
+    
+    
+    func navigateToHomeScreen(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "MainTabBar") as! MainTabBarViewController
+//        
+//        let navVC = UINavigationController(rootViewController: viewController)
+        
+//        navVC.tabBarItem = UITabBarItem(title: "Active Order", image: UIImage(systemName: "bag"),selectedImage: UIImage(systemName: "bag.fill"))
+//        navVC.tabBarItem = UITabBarItem(title: "Restaurant Info", image: UIImage(systemName: "info"), tag: 1)
+//        navVC.tabBarItem = UITabBarItem(title: "All Prducts", image:UIImage(systemName: "list.bullet.clipboard") , tag: 2)
+        
+        
+//        let tabBarController = UITabBarController()
+//        
+//        tabBarController.viewControllers = [viewController]
+        
+        viewController.modalPresentationStyle = .fullScreen
+        present(viewController, animated: true)
+        print("hehe")
+        
+    }
+    
+    
 }
 

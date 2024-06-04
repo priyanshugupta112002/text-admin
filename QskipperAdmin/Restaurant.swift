@@ -68,7 +68,7 @@ import Foundation
 import UIKit
 
 struct Restaurant: Codable {
-    var user: String = "66558ae03c5384cd000fcd8e"
+    var user: String = ""
     var restaurant_Name: String = ""
     var banner_photo: UIImage? {
         didSet {

@@ -26,6 +26,8 @@ class DataControlller{
     }
     func setID( id:String){
         _currentUser.id = id
+        _restaurant.user = id
+        _product.restaurant_id = id
     }
     
   
@@ -53,6 +55,10 @@ class DataControlller{
         return _product
     }
     
+    
+    
+    // get all product
+    
     private var _allProduct: [Product] = []
     
     
@@ -62,6 +68,15 @@ class DataControlller{
     func set_all_product(product:[Product]){
         _allProduct = product
     }
+    func get_product_row(index :Int)-> Product{
+        return _allProduct[index]
+    }
+    func set_product_image(index:Int , image:UIImage){
+        _allProduct[index].product_photo = image
+    }
+    
+    
+    // add product
     
     func set_product_name(name:String){
         _product.product_name = name
@@ -80,6 +95,9 @@ class DataControlller{
     }
     func set_product_description(description :String){
         _product.description = description
+    }
+    func set_products_resturation_id(id:String){
+        _product.restaurant_id = id
     }
     
     
