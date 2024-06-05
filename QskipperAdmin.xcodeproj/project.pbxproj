@@ -14,6 +14,7 @@
 		C43F7A4C2C00745B005D64D3 /* RestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43F7A4B2C00745B005D64D3 /* RestaurantViewController.swift */; };
 		C4B8E8012C0F2B6E00193428 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B8E8002C0F2B6E00193428 /* MainTabBarViewController.swift */; };
 		C4BE58DA2C0DCE6200C9180E /* UpdateAndDeleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BE58D92C0DCE6200C9180E /* UpdateAndDeleteViewController.swift */; };
+		C4C19B882C108D7C00045409 /* MultipartFormDataKit in Frameworks */ = {isa = PBXBuildFile; productRef = C4C19B872C108D7C00045409 /* MultipartFormDataKit */; };
 		C4C6C2522BFDF40A006D2171 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C6C2512BFDF40A006D2171 /* AppDelegate.swift */; };
 		C4C6C2542BFDF40A006D2171 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C6C2532BFDF40A006D2171 /* SceneDelegate.swift */; };
 		C4C6C2562BFDF40A006D2171 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C6C2552BFDF40A006D2171 /* ViewController.swift */; };
@@ -63,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4C19B882C108D7C00045409 /* MultipartFormDataKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,9 @@
 			dependencies = (
 			);
 			name = QskipperAdmin;
+			packageProductDependencies = (
+				C4C19B872C108D7C00045409 /* MultipartFormDataKit */,
+			);
 			productName = QskipperAdmin;
 			productReference = C4C6C24E2BFDF40A006D2171 /* QskipperAdmin.app */;
 			productType = "com.apple.product-type.application";
@@ -159,6 +164,9 @@
 				Base,
 			);
 			mainGroup = C4C6C2452BFDF40A006D2171;
+			packageReferences = (
+				C4C19B862C108D7C00045409 /* XCRemoteSwiftPackageReference "MultipartFormDataKit" */,
+			);
 			productRefGroup = C4C6C24F2BFDF40A006D2171 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -425,6 +433,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C4C19B862C108D7C00045409 /* XCRemoteSwiftPackageReference "MultipartFormDataKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Kuniwak/MultipartFormDataKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C4C19B872C108D7C00045409 /* MultipartFormDataKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4C19B862C108D7C00045409 /* XCRemoteSwiftPackageReference "MultipartFormDataKit" */;
+			productName = MultipartFormDataKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C4C6C2462BFDF40A006D2171 /* Project object */;
 }

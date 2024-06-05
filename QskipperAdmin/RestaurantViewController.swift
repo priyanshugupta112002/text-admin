@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MultipartFormDataKit
 
 class RestaurantViewController: UIViewController, UIImagePickerControllerDelegate , UINavigationControllerDelegate, UITableViewDataSource,UITableViewDelegate {
     
@@ -96,41 +97,91 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         DataControlller.shared.set_restaurant_cuisine(cuisine: selectedRowAt)
         DataControlller.shared.setEstimatedTime(time: Int(EstimatedTime.text!)!)
         
-   Task.init(){
-            do{
-               try await  sendRestaurantData(restaurant: DataControlller.shared.restaurant)
-            }
-        }
-    }
-    func sendRestaurantData(restaurant: Restaurant) async throws {
-        guard let url = URL(string: "https://queueskipperbackend.onrender.com/register-restaurant") else { return }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let cuisine = selectedRowAt // Assuming this is a single selected cuisine
+
+          // Create form data
+        print(currentImage?.image , Restaurant_Name.text , selectedRowAt )
+        if let formData = createFormData(image: (currentImage?.image)!, restaurantName: Restaurant_Name.text!, cuisines: selectedRowAt, estimatedTime: Int(EstimatedTime.text!)!) {
+            
+            debugPrint(formData)
+            print("cxecwe")
+              var request = URLRequest(url: URL(string: "https://rev-ee-gates-added.trycloudflare.com/register-restaurant")!)
+              request.httpMethod = "POST"
+//            let boundary =
+//              request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+////            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+////                request.setValue("application/json", forHTTPHeaderField: "Accept")
+            ///
+        
+            request.setValue(formData.contentType, forHTTPHeaderField: "Content-Type")
+
+            request.httpBody = formData.body
+
+              URLSession.shared.dataTask(with: request) { (data, response, error) in
+                  if let error = error {
+                      print("Error: \(error.localizedDescription)")
+                      return
+                  }
+                  // Handle response
+                  if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                      print("Response: \(responseString)")
+                  }
+              }.resume()
+          } else {
+              print("Failed to create form data.")
+          }
+      }
+        
+        
+        
+        
+        
+        
 
         
-        let jsonEncoder = JSONEncoder()
-        let jsonData = try? jsonEncoder.encode(restaurant)
-        request.httpBody = jsonData
         
-        let (data , response) = try await URLSession.shared.data(for: request)
+//        let formData = createFormData(currentImage?.image!: UIImage, Restaurant_Name: String , boolValue: Bool)
         
-        print(data)
-        if let string = String(data: data, encoding: .utf8)
-        {
-            debugPrint(string)
-        }
         
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 202 else{
-            print("errpor")
-            return
-            
-        }
         
-    }
-    
+//        
+//   Task.init(){
+//            do{
+//               try await  sendRestaurantData(restaurant: DataControlller.shared.restaurant)
+//            }
+//        }
+//    }
+//    func sendRestaurantData(restaurant: Restaurant) async throws {
+//        guard let url = URL(string: "https://queueskipperbackend.onrender.com/register-restaurant") else { return }
+//        
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "POST"
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//
+//        
+//        let jsonEncoder = JSONEncoder()
+//        let jsonData = try? jsonEncoder.encode(restaurant)
+//        request.httpBody = jsonData
+//        
+//        let (data , response) = try await URLSession.shared.data(for: request)
+//        
+//        print(data)
+//        if let string = String(data: data, encoding: .utf8)
+//        {
+//            debugPrint(string)
+//        }
+//        
+//        guard let httpResponse = response as? HTTPURLResponse,
+//              httpResponse.statusCode == 202 else{
+//            print("errpor")
+//            return
+//            
+//        }
+//        
+//    }
+//    
     
     
     
@@ -214,11 +265,14 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
     
     func sendProductData(product : Product) async throws {
         
-        guard let url = URL(string: "https://queueskipperbackend.onrender.com/create-product") else { return }
+        guard let url = URL(string: "https://rev-ee-gates-added.trycloudflare.com/create-product") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let boundary = UUID().uuidString
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
         debugPrint("Efwefewf")
         debugPrint(product)
         
@@ -246,10 +300,123 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         
         
     }
+    
+    func createFormData(image: UIImage, restaurantName: String, cuisines: String, estimatedTime: Int) -> MultipartFormData.BuildResult? {
+//        let boundary = UUID().uuidString
+//        var formData = Data()
+//
+//        formData.append("--\(boundary)\r\n")
+//        formData.append("Content-Disposition: form-data; name=\"restaurantName\"\r\n\r\n")
+//        formData.append("\(restaurantName)\r\n")
+//
+//        if let imageData = image.jpegData(compressionQuality: 1.0) {
+//            formData.append("--\(boundary)\r\n")
+//            formData.append("Content-Disposition: form-data; name=\"restaurantImage\"; filename=\"restaurant.jpg\"\r\n")
+//            formData.append("Content-Type: image/jpeg\r\n\r\n")
+//            formData.append(imageData)
+//            formData.append("\r\n")
+//        }
+//
+//        formData.append("--\(boundary)\r\n")
+//        formData.append("Content-Disposition: form-data; name=\"cuisines\"\r\n\r\n")
+//        formData.append("\(cuisines)\r\n")
+//
+//        formData.append("--\(boundary)\r\n")
+//        formData.append("Content-Disposition: form-data; name=\"estimatedTime\"\r\n\r\n")
+//        formData.append("\(estimatedTime)\r\n")
+//
+//        formData.append("--\(boundary)--\r\n")
+//
+//        return formData
+        
+        let multipartFormData = try? MultipartFormData.Builder.build(
+            with: [
+                (
+                    name: "restaurant_Name",
+                    filename: nil,
+                    mimeType: nil,
+                    data: "Hello, World!".data(using: .utf8)!
+                ),
+                (
+                    name: "cuisines",
+                    filename: nil,
+                    mimeType: nil,
+                    data: "ccc".data(using: .utf8)!
+                ),
+                (
+                    name: "estimatedTime",
+                    filename: nil,
+                    mimeType: nil,
+                    data: "17".data(using: .utf8)!
+                ),
+                (
+                    name: "bannerPhoto64Image",
+                    filename: "example.jpeg",
+                    mimeType: MIMEType.imageJpeg,
+                    data: image.jpegData(compressionQuality: 0.1)!
+                ),
+            ],
+            willSeparateBy: RandomBoundaryGenerator.generate()
+        )
+        
+        return multipartFormData
+    }
+    
+    
+    
+//    func createFormData(image: UIImage, restaurantName: String, cuisines: String, estimatedTime: Int) -> Data? {
+//        let boundary = UUID().uuidString
+//        var formData = Data()
+//
+//        // Add restaurant name to form data
+//        formData.append("--\(boundary)\r\n")
+//        formData.append("Content-Disposition: form-data; name=\"restaurantName\"\r\n\r\n")
+//        formData.append(restaurantName.data(using: .utf8)!)
+//        formData.append("\r\n")
+//
+//        // Add image data to form data
+//        if let imageData = image.jpegData(compressionQuality: 1.0) {
+//            formData.append("--\(boundary)\r\n")
+//            formData.append("Content-Disposition: form-data; name=\"restaurantImage\"; filename=\"restaurant.jpg\"\r\n")
+//            formData.append("Content-Type: image/jpeg\r\n\r\n")
+//            formData.append(imageData)
+//            formData.append("\r\n")
+//        }
+//
+//        // Add cuisines to form data
+//        formData.append("--\(boundary)\r\n")
+//        formData.append("Content-Disposition: form-data; name=\"cuisines\"\r\n\r\n")
+//        formData.append(cuisines.data(using: .utf8)!)
+//        formData.append("\r\n")
+//
+//        // Add estimated time to form data
+//        formData.append("--\(boundary)\r\n")
+//           
+//        formData.append("Content-Disposition: form-data; name=\"estimatedTime\"\r\n\r\n")
+//           formData.append(String(estimatedTime))
+//           formData.append("\r\n")
+//
+//        formData.append("--\(boundary)--\r\n")
+//        
+//        debugPrint(formData)
+//
+//        return formData
+//    }
+//
+//    
+//    
+//    
+//    
 }
     
 
 
-
+extension Data {
+    mutating func append(_ string: String) {
+        if let data = string.data(using: .utf8) {
+            append(data)
+        }
+    }
+}
 
 

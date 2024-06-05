@@ -11,7 +11,7 @@ import Foundation
 class Networking {
     
     static let shared = Networking()
-    let baseUrl = URL(string: "https://queueskipperbackend.onrender.com/")!
+    let baseUrl = URL(string: "https://rev-ee-gates-added.trycloudflare.com/")!
     
     
     enum NetworkingError : Error , LocalizedError{

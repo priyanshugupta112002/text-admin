@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "multipartformdatakit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Kuniwak/MultipartFormDataKit",
+      "state" : {
+        "revision" : "27bf281a9adfd742fa2fb3318c176dcc7a111599",
+        "version" : "1.0.1"
+      }
+    }
+  ],
+  "version" : 2
+}
