@@ -95,7 +95,8 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         DataControlller.shared.set_restaurant_banner(image: (currentImage?.image)!)
         DataControlller.shared.set_restaurant_cuisine(cuisine: selectedRowAt)
         DataControlller.shared.setEstimatedTime(time: Int(EstimatedTime.text!)!)
-        
+        print("Image String ")
+        print(DataControlller.shared.restaurant.banner_photo)
    Task.init(){
             do{
                try await  sendRestaurantData(restaurant: DataControlller.shared.restaurant)
@@ -103,33 +104,65 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     func sendRestaurantData(restaurant: Restaurant) async throws {
-        guard let url = URL(string: "https://queueskipperbackend.onrender.com/register-restaurant") else { return }
+        guard let url = URL(string: "https://queueskipperbackend.onrender.com/register-restaurant") else {
+            print("Error: Invalid URL")
+            return
+        }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
+        let boundary = "Boundary-\(UUID().uuidString)"
+        let contentType = "multipart/form-data; boundary=\(boundary)"
+        request.setValue(contentType, forHTTPHeaderField: "Content-Type")
         
-        let jsonEncoder = JSONEncoder()
-        let jsonData = try? jsonEncoder.encode(restaurant)
-        request.httpBody = jsonData
+        var body = Data()
         
-        let (data , response) = try await URLSession.shared.data(for: request)
-        
-        print(data)
-        if let string = String(data: data, encoding: .utf8)
-        {
-            debugPrint(string)
+        // Add other fields
+        if let user = restaurant.user.data(using: .utf8) {
+            body.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"user\"\r\n\r\n".data(using: .utf8)!)
+            body.append(user)
         }
         
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 202 else{
-            print("errpor")
-            return
+        if let restaurantName = restaurant.restaurant_Name.data(using: .utf8) {
+            body.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"restaurant_Name\"\r\n\r\n".data(using: .utf8)!)
+            body.append(restaurantName)
+        }
+        
+        // Add image
+        if let image = restaurant.banner_photo, let imageData = image.jpegData(compressionQuality: 0.5) {
+            body.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"bannerPhoto64Image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            body.append(imageData)
+        }
+        
+        // Add other fields
+        // ...
+        
+        body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        request.httpBody = body
+        
+        do {
+            let (data , response) = try await URLSession.shared.data(for: request)
             
+            print(data)
+//            if let string = String(data: data, encoding: .utf8) {
+//                debugPrint(string)
+//            }
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Error: Unexpected response status code")
+                return
+            }
+        } catch {
+            print("Error: \(error)")
         }
-        
     }
+
+
     
     
     
