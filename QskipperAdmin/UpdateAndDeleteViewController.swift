@@ -150,12 +150,12 @@ class UpdateAndDeleteViewController: UIViewController {
         Task.init  {
             do {
                 // Update product information
-                if let response = try await productApi.shared.updateImformation(currentproduct: currentProduct) {
+                let response: () = try await productApi.shared.updateImformation(currentproduct: currentProduct)
 //                    print(responsed)
                     await MainActor.run {
                         // Handle successful update on the main thread
                     }
-                }
+                
             } catch {
                 await MainActor.run {
                     // Handle errors on the main thread
