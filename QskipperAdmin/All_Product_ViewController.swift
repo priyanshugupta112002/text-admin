@@ -82,6 +82,8 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
             if let url = URL(string: "https://queueskipperbackend.onrender.com/get_product_photo/\(DataControlller.shared.get_product_row(index: indexPath.row)._id)"){
                 
                 if let image = try? await productApi.shared.fetchImage(from: url){
+                   debugPrint("xwxwee")
+                    debugPrint(image)
                     DataControlller.shared.set_product_image(index: indexPath.row, image: image)
                     
                     cell.Product_Image.image = image

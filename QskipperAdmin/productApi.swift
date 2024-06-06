@@ -29,78 +29,94 @@ class productApi{
         
         if let string = String(data: data, encoding: .utf8)
         {
-           debugPrint(string)
+            debugPrint(string)
+            debugPrint("get all product")
         }
         
         guard let httpResponse = response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else{
             
             throw productApiError.productNotFound
-           
+            
         }
         let decoder = JSONDecoder()
         let userResponse = try decoder.decode(ProductResponse.self, from: data)
-
+        
         return userResponse.products
     }
     
     
     func fetchImage(from url :URL) async throws -> UIImage{
         
+        debugPrint("fetching image")
+        
         let(data , response) = try await URLSession.shared.data(from: url)
         
-        if let string = String(data: data, encoding: .utf8)
-        {
-           debugPrint(string)
+                if let string = String(data: data, encoding: .utf8)
+                {
+                    print("done doen")
+                   debugPrint(string)
+                }
+        debugPrint("sbse phle")
+        debugPrint(response)
+        guard let httpResponse = response as? HTTPURLResponse , httpResponse.statusCode == 200  else{
+            
+                throw productApiError.ImageNotFound
+            }
+        debugPrint("aagya")
+//            let decoder = JSONDecoder()
+//            let productImage = try decoder.decode(Image.self, from: data)
+//        / Create a UIImage from the data
+            guard let image = UIImage(data: data) else {
+                throw productApiError.ImageNotFound
+            }
+            
+//        guard let image = UIImage(data: productImage.product_photo)else{
+//                throw productApiError.ImageNotFound
+//            }
+        debugPrint(image)
+            
+        return image
+            
+        }
+    
+        
+        
+        func updateImformation(currentproduct:Product) async throws {
+            let registerUrl = baseUrl.appendingPathComponent("update-photo")
+            var request = URLRequest(url:registerUrl)
+            var item = currentproduct
+            request.httpMethod = "POST"
+            
+            request.setValue("application/json", forHTTPHeaderField:  "Content-Type")
+            
+            let jsonEncoder = JSONEncoder()
+            let jsonData = try? jsonEncoder.encode(item)
+            request.httpBody = jsonData
+            
+            let(data , response) = try await URLSession.shared.data(for: request)
+            
+            
+            if let string = String(data: data, encoding: .utf8)
+            {
+                debugPrint(string)
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.statusCode == 202 else{
+                
+                throw productApiError.productCanNotUpdated
+            }
+            let decoder = JSONDecoder()
+            let userResponse = try decoder.decode(User.self, from: data)
+            print(userResponse)
+            print("ccwdcd")
+            
+            
         }
         
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 200 else{
-            
-            throw productApiError.ImageNotFound
-        }
-        let decoder = JSONDecoder()
-        let productImage = try decoder.decode(imageResponse.self, from: data)
-
-        return productImage.product_photo.banner_photo64
         
     }
     
-  
-    func updateImformation(currentproduct:Product) async throws {
-        let registerUrl = baseUrl.appendingPathComponent("update-photo")
-        var request = URLRequest(url:registerUrl)
-        var item = currentproduct
-        request.httpMethod = "POST"
-        
-        request.setValue("application/json", forHTTPHeaderField:  "Content-Type")
-      
-        let jsonEncoder = JSONEncoder()
-        let jsonData = try? jsonEncoder.encode(item)
-        request.httpBody = jsonData
-        
-        let(data , response) = try await URLSession.shared.data(for: request)
-        
-        
-        if let string = String(data: data, encoding: .utf8)
-        {
-           debugPrint(string)
-        }
-        
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 202 else{
-            
-            throw productApiError.productCanNotUpdated
-        }
-        let decoder = JSONDecoder()
-        let userResponse = try decoder.decode(User.self, from: data)
-        print(userResponse)
-        print("ccwdcd")
-
-        
-    }
-
     
-}
-
 

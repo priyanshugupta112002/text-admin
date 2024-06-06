@@ -46,9 +46,11 @@ struct ProductResponse:Codable{
 
 struct imageResponse:Codable{
     let product_photo:Image
+    var id :String
     
     enum CodingKeys : String ,CodingKey{
-        case product_photo
+        case product_photo = "product_photo64Image"
+        case id = "_id"
         
     }
 }
@@ -56,8 +58,10 @@ struct imageResponse:Codable{
 struct Image :Codable{
     
     var banner_photo64: UIImage
+    var contentType:String = ""
     enum CodingKeys:String ,CodingKey{
-        case banner_photo64
+        case banner_photo64 = "data"
+        case contentType
     }
     
     init(from decoder: Decoder) throws {

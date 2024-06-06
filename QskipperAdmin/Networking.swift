@@ -11,7 +11,7 @@ import Foundation
 class Networking {
     
     static let shared = Networking()
-    let baseUrl = URL(string: "https://rev-ee-gates-added.trycloudflare.com/")!
+    let baseUrl = URL(string: "https://queueskipperbackend.onrender.com/")!
     
     
     enum NetworkingError : Error , LocalizedError{
@@ -38,8 +38,9 @@ class Networking {
         let(data , response) = try await URLSession.shared.data(for: request)
         
         
-        if String(data: data, encoding: .utf8) != nil{
-            print("error in register")
+        if let string = String(data: data, encoding: .utf8)
+        {
+           debugPrint(string)
         }
         
         guard let httpResponse = response as? HTTPURLResponse,
