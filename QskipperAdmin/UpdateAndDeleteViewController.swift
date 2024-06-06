@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import MultipartFormDataKit
 
 class UpdateAndDeleteViewController: UIViewController {
     
     
     var currentProduct = Product()
+    var index = -1
     
     
     @IBOutlet var Product_Image: UIImageView!
@@ -42,16 +44,16 @@ class UpdateAndDeleteViewController: UIViewController {
     }
     
     
-    @IBAction func DoneButtonTapped(_ sender: Any) {
+    @IBAction func DoneButtonTapped(_ sender: UIButton) {
         
-        
+
         currentProduct.product_name = Product_Name.text!
         currentProduct.product_price = Int(Product_Price.text!)!
         
         currentProduct.description = Product_Description.text!
         currentProduct.food_category = Product_Category.text!
         
-        currentProduct.extraTime = Double(Product_ExtraTime.text!)!
+        currentProduct.extraTime = Int(Product_ExtraTime.text!)!
      
         if(Product_featured.isOn){
             currentProduct.featured = true
@@ -65,31 +67,89 @@ class UpdateAndDeleteViewController: UIViewController {
         }
         
         
+        if let formData = updateFormAppData(image:currentProduct.product_photo!, ProductName: Product_Name.text! , prepTime: Int(Product_ExtraTime.text!)! ,productPrice: Int(Product_Price.text!)! , ProductCategory: Product_Category.text! , ProductDescription: Product_Description.text!   ) {
+            
+        debugPrint("done button")
+            var request = URLRequest(url: URL(string: "https://trout-worst-halloween-palmer.trycloudflare.com/update-food/\(currentProduct._id)")!)
+              request.httpMethod = "PUT"
+        
+            request.setValue(formData.contentType, forHTTPHeaderField: "Content-Type")
+
+            request.httpBody = formData.body
+
+              URLSession.shared.dataTask(with: request) { (data, response, error) in
+                  if let error = error {
+                      print("Error: \(error.localizedDescription)")
+                      return
+                  }
+                  // Handle response
+                  if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                      print("Response: \(responseString)")
+                  }
+              }.resume()
+          } else {
+              print("Failed to create form data.")
+          }
+      }
+        
+        
 
         
    
-        Task{
-
-            do {
-                // update Product  user
-               
-                let response: () = try await  productApi.shared.updateImformation(currentproduct: currentProduct)
-                    print(response)
-                    await MainActor.run {
-                        
-                    }
-                
-            } catch {
-                await MainActor.run {
-                    // Handle errors on the main thread
-                    print("Product update failed: \(error)")
-                }
-            }
-            
-        }
            
-    }
-   
+    func updateFormAppData(image: UIImage ,  ProductName: String, prepTime: Int , productPrice:Int , ProductCategory:String ,ProductDescription :String ) -> MultipartFormData.BuildResult? {
 
-}
+
+        let multipartFormData = try? MultipartFormData.Builder.build(
+            with: [
+                (
+                    name: "product_name",
+                    filename: nil,
+                    mimeType: nil,
+                    data: ProductName.data(using: .utf8)!
+                ),
+                (
+                    name: "description",
+                    filename: nil,
+                    mimeType: nil,
+                    data: ProductDescription.data(using: .utf8)!
+                ),
+                (
+                    name: "food_category",
+                    filename: nil,
+                    mimeType: nil,
+                    data: ProductCategory.data(using: .utf8)!
+                ),
+                (
+                    name: "extraTime",
+                    filename: nil,
+                    mimeType: nil,
+                    data: "\(prepTime)".data(using: .utf8)!
+                ),
+                (
+                    name: "product_price",
+                    filename: nil,
+                    mimeType: nil,
+                    data: "\(productPrice)".data(using: .utf8)!
+                ),
+                (
+                    name: "product_photo64Image",
+                    filename: "example.jpeg",
+                    mimeType: MIMEType.imageJpeg,
+                    data: image.jpegData(compressionQuality: 0.1)!
+                ),
+                
+            ],
+            willSeparateBy: RandomBoundaryGenerator.generate()
+        )
+        
+        return multipartFormData
+    }
+    
+    
+    
+    }
+
+
+
 

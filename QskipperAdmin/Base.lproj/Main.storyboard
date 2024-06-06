@@ -676,6 +676,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="DoH-Bv-Cx8">
                             <connections>
                                 <action selector="DoneButtonTapped:" destination="kfz-T0-90y" id="dzw-yM-TLb"/>
+                                <segue destination="ldw-j3-t6d" kind="unwind" identifier="Donesegue" unwindAction="unwindtoVcWithSegue:" id="r1V-lD-xbf"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

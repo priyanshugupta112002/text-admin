@@ -16,7 +16,7 @@ struct Product :Codable {
     var restaurant_id: String = ""
     var product_name: String = ""
     var product_price: Int = 0
-    var extraTime: Double = 0.0
+    var extraTime: Int = 0
     var rating: Double = 0
     var availability:Bool = true
     var food_category:String = ""

@@ -76,6 +76,15 @@ class DataControlller{
     }
     
     
+    func removeProduct(index: Int) { _allProduct.remove(at: index)}
+    func appendProduct(product: Product, index: Int) { _allProduct.insert(product, at: index)}
+    
+    
+    
+    
+    
+    
+    
     // add product
     
     func set_product_name(name:String){
@@ -87,7 +96,7 @@ class DataControlller{
     func set_product_image(image:UIImage){
         _product.product_photo = image
     }
-    func set_prepTime(time:Double){
+    func set_prepTime(time:Int){
         _product.extraTime = time
     }
     func set_product_category (category:String){

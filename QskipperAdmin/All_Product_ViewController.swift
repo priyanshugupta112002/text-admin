@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MultipartFormDataKit
 
 class All_Product_ViewController: UIViewController , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
     
@@ -43,6 +44,7 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
            
         }
         
+        
       
         
         var firstNib = UINib(nibName: "All_Products", bundle: nil)
@@ -54,6 +56,10 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
         All_ProductCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        All_ProductCollectionView.reloadData()
     }
     
     
@@ -134,6 +140,8 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
         let product = DataControlller.shared.get_product_row(index: indexPath.row)
         
         viewController.currentProduct = product
+        viewController.index = indexPath.row
+        
         
         let viewNavController = UINavigationController(rootViewController: viewController)
         
@@ -149,9 +157,134 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
     }
     @IBAction func unwindtoVc(segue:UIStoryboardSegue){
         
-        guard segue.identifier == "DoneSegue" else {
+        guard segue.identifier == "Donesegue" else {
             return
         }
+        var newProduct = Product()
+        var index: Int = -1
+        guard let sourceVC = segue.source as? UpdateAndDeleteViewController  else { return }
+            var currentProduct = sourceVC.currentProduct
+            index = sourceVC.index
+            currentProduct.product_name = sourceVC.Product_Name.text!
+            currentProduct.product_price = Int(sourceVC.Product_Price.text!)!
+            
+            currentProduct.description = sourceVC.Product_Description.text!
+            currentProduct.food_category = sourceVC.Product_Category.text!
+            
+            currentProduct.extraTime = Int(sourceVC.Product_ExtraTime.text!)!
+            
+            if(sourceVC.Product_featured.isOn){
+                currentProduct.featured = true
+            }else{
+                currentProduct.featured = false
+            }
+            if(sourceVC.Product_IsAvailable.isOn){
+                currentProduct.availability = true
+            }else{
+                currentProduct.availability = false
+            }
+            
+            newProduct = currentProduct
+            
+        
+        debugPrint("changing data")
+        debugPrint(newProduct)
+        DataControlller.shared.removeProduct( index: index)
+        DataControlller.shared.appendProduct(product: newProduct, index: index)
+        
+        
+        
+        
+        
+        if let formData = updateFormAppData(image:sourceVC.currentProduct.product_photo!, ProductName: sourceVC.Product_Name.text! , prepTime: Int(sourceVC.Product_ExtraTime.text!)! ,productPrice: Int(sourceVC.Product_Price.text!)! , ProductCategory: sourceVC.Product_Category.text! , ProductDescription: sourceVC.Product_Description.text!   , restaurant_id: sourceVC.currentProduct.restaurant_id ) {
+            
+        debugPrint("done button")
+            var request = URLRequest(url: URL(string: "https://trout-worst-halloween-palmer.trycloudflare.com/update-food/\(currentProduct._id)")!)
+              request.httpMethod = "PUT"
+        
+            request.setValue(formData.contentType, forHTTPHeaderField: "Content-Type")
+
+            request.httpBody = formData.body
+
+              URLSession.shared.dataTask(with: request) { (data, response, error) in
+                  if let error = error {
+                      print("Error: \(error.localizedDescription)")
+                      return
+                  }
+                  // Handle response
+                  if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                      print("Response: \(responseString)")
+                  }
+              }.resume()
+          } else {
+              print("Failed to create form data.")
+          }
+      }
+        
+        
+
+        
+   
+           
+    func updateFormAppData(image: UIImage ,  ProductName: String, prepTime: Int , productPrice:Int , ProductCategory:String ,ProductDescription :String ,restaurant_id :String ) -> MultipartFormData.BuildResult? {
+
+
+        let multipartFormData = try? MultipartFormData.Builder.build(
+            with: [
+                (
+                    name: "product_name",
+                    filename: nil,
+                    mimeType: nil,
+                    data: ProductName.data(using: .utf8)!
+                ),
+                (
+                    name: "description",
+                    filename: nil,
+                    mimeType: nil,
+                    data: ProductDescription.data(using: .utf8)!
+                ),
+                (
+                    name: "food_category",
+                    filename: nil,
+                    mimeType: nil,
+                    data: ProductCategory.data(using: .utf8)!
+                ),
+                (
+                    name: "restaurant_id",
+                    filename: nil,
+                    mimeType: nil,
+                    data: restaurant_id.data(using: .utf8)!
+                ),
+                (
+                    name: "extraTime",
+                    filename: nil,
+                    mimeType: nil,
+                    data: "\(prepTime)".data(using: .utf8)!
+                ),
+                (
+                    name: "product_price",
+                    filename: nil,
+                    mimeType: nil,
+                    data: "\(productPrice)".data(using: .utf8)!
+                ),
+                (
+                    name: "product_photo64Image",
+                    filename: "example.jpeg",
+                    mimeType: MIMEType.imageJpeg,
+                    data: image.jpegData(compressionQuality: 0.1)!
+                ),
+                
+            ],
+            willSeparateBy: RandomBoundaryGenerator.generate()
+        )
+        
+        return multipartFormData
+    }
+
+        
+        
+        
+        
         
         
     }
@@ -160,7 +293,7 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
     
     
     
-}
+
 
 
 
