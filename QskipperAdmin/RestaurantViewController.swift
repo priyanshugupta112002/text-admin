@@ -98,23 +98,18 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         DataControlller.shared.set_restaurant_cuisine(cuisine: selectedRowAt)
         DataControlller.shared.setEstimatedTime(time: Int(EstimatedTime.text!)!)
         
-        
+        print(DataControlller.shared.Currentuser.id)
         
 //        let cuisine = selectedRowAt  Assuming this is a single selected cuisine
 
           // Create form data
 //        print(currentImage?.image , Restaurant_Name.text , selectedRowAt )
-        if let formData = createFormData(image: (currentImage?.image)!, restaurantName: Restaurant_Name.text!, cuisines: selectedRowAt, estimatedTime: Int(EstimatedTime.text!)! ,  restaurantId: DataControlller.shared.Currentuser.id) {
+        if let formData = createFormData(image: (currentImage?.image)!, restaurantName: Restaurant_Name.text!, cuisines: selectedRowAt, estimatedTime: Int(EstimatedTime.text!)!  , userId :DataControlller.shared.Currentuser.id) {
             
-            debugPrint(formData)
-            print("cxecwe")
+      
               var request = URLRequest(url: URL(string: "https://trout-worst-halloween-palmer.trycloudflare.com/register-restaurant")!)
               request.httpMethod = "POST"
-//            let boundary =
-//              request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-////            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-////                request.setValue("application/json", forHTTPHeaderField: "Accept")
-            ///
+
         
             request.setValue(formData.contentType, forHTTPHeaderField: "Content-Type")
 
@@ -127,7 +122,11 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
                   }
                   // Handle response
                   if let data = data, let responseString = String(data: data, encoding: .utf8) {
-                      print("Response: \(responseString)")
+                      
+                      print(responseString)
+                      print("cewcwec")
+                      DataControlller.shared.set_Restaurant_Id(id: responseString)
+                      
                   }
               }.resume()
           } else {
@@ -137,53 +136,7 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         
         
         
-        
-        
-        
 
-        
-        
-//        let formData = createFormData(currentImage?.image!: UIImage, Restaurant_Name: String , boolValue: Bool)
-        
-        
-        
-//        
-//   Task.init(){
-//            do{
-//               try await  sendRestaurantData(restaurant: DataControlller.shared.restaurant)
-//            }
-//        }
-//    }
-//    func sendRestaurantData(restaurant: Restaurant) async throws {
-//        guard let url = URL(string: "https://queueskipperbackend.onrender.com/register-restaurant") else { return }
-//        
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//
-//        
-//        let jsonEncoder = JSONEncoder()
-//        let jsonData = try? jsonEncoder.encode(restaurant)
-//        request.httpBody = jsonData
-//        
-//        let (data , response) = try await URLSession.shared.data(for: request)
-//        
-//        print(data)
-//        if let string = String(data: data, encoding: .utf8)
-//        {
-//            debugPrint(string)
-//        }
-//        
-//        guard let httpResponse = response as? HTTPURLResponse,
-//              httpResponse.statusCode == 202 else{
-//            print("errpor")
-//            return
-//            
-//        }
-//        
-//    }
-//    
-    
     
     
     @IBAction func Upload_Banner_Photo(_ sender: UIButton) {
@@ -242,6 +195,7 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
 
      
     @IBAction func Add_Product(_ sender: Any) {
+        print(DataControlller.shared.Currentuser)
         
         DataControlller.shared.set_product_name(name: Product_Name.text ?? "product")
         DataControlller.shared.set_prepTime(time : Int(Preparation_Time.text!) ?? 0)
@@ -249,12 +203,13 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         DataControlller.shared.set_product_price(price: Int(Product_Price.text!) ?? 0)
         DataControlller.shared.set_product_category(category:(productCategory.text!) )
         DataControlller.shared.set_product_description(description: Product_Description.text ?? "Veg")
-        DataControlller.shared.set_products_resturation_id(id: DataControlller.shared.restaurant.user)
+        DataControlller.shared.set_products_resturation_id(id: DataControlller.shared.restaurant.id)
         
-        
-        if let formData = createFormAppData(image: (currentImage?.image)!, ProductName: Product_Name.text! , prepTime: Int(Preparation_Time.text!)! ,productPrice: Int(Product_Price.text!)! , ProductCategory: productCategory.text! , ProductDescription: Product_Description.text!  , ProductId: DataControlller.shared.restaurant.user  ) {
-            
-            debugPrint(formData)
+        print(DataControlller.shared.restaurant.id)
+        if let formData = createFormAppData(image: (currentImage?.image)!, ProductName: Product_Name.text! , prepTime: Int(Preparation_Time.text!)! ,productPrice: Int(Product_Price.text!)! , ProductCategory: productCategory.text! , ProductDescription: Product_Description.text!  , restaurantid: DataControlller.shared.restaurant.id  ) {
+            print("w12313")
+            debugPrint(DataControlller.shared.restaurant.restaurant_Name)
+            debugPrint(DataControlller.shared.restaurant.id )
             print("cxecwe")
               var request = URLRequest(url: URL(string: "https://trout-worst-halloween-palmer.trycloudflare.com/create-product")!)
               request.httpMethod = "POST"
@@ -279,47 +234,9 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
       }
         
         
- 
-    
-    
-    
-    func sendProductData(product : Product) async throws {
+  
+    func createFormData(image: UIImage, restaurantName: String, cuisines: String, estimatedTime: Int  , userId :String) -> MultipartFormData.BuildResult? {
         
-        guard let url = URL(string: "https://rev-ee-gates-added.trycloudflare.com/create-product") else { return }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-
-        let boundary = UUID().uuidString
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
-        debugPrint("Efwefewf")
-        debugPrint(product)
-        
-        let jsonEncoder = JSONEncoder()
-        let jsonData = try? jsonEncoder.encode(product)
-        request.httpBody = jsonData
-        
-        debugPrint(product)
-        
-        let (data , response) = try await URLSession.shared.data(for: request)
-        
-        print(data)
-        if let string = String(data: data, encoding: .utf8)
-        {
-            debugPrint(string)
-        }
-        
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 202 else{
-            print("errpor")
-            return
-            
-        }
-    }
-    
-    func createFormData(image: UIImage, restaurantName: String, cuisines: String, estimatedTime: Int , restaurantId:String) -> MultipartFormData.BuildResult? {
-
 
         let multipartFormData = try? MultipartFormData.Builder.build(
             with: [
@@ -328,6 +245,12 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
                     filename: nil,
                     mimeType: nil,
                     data: restaurantName.data(using: .utf8)!
+                ),
+                (
+                    name: "userId",
+                    filename: nil,
+                    mimeType: nil,
+                    data: userId.data(using: .utf8)!
                 ),
                 (
                     name: "cuisines",
@@ -341,12 +264,7 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
                     mimeType: nil,
                     data: "\(estimatedTime)".data(using: .utf8)!
                 ),
-                (
-                    name: "restaurantId",
-                    filename: nil,
-                    mimeType: nil,
-                    data: restaurantId.data(using: .utf8)!
-                ),
+               
                 (
                     name: "bannerPhoto64Image",
                     filename: "example.jpeg",
@@ -360,8 +278,9 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         return multipartFormData
     }
     
-    func createFormAppData(image: UIImage, ProductName: String, prepTime: Int , productPrice:Int , ProductCategory:String ,ProductDescription :String , ProductId:String) -> MultipartFormData.BuildResult? {
-
+    func createFormAppData(image: UIImage, ProductName: String, prepTime: Int , productPrice:Int , ProductCategory:String ,ProductDescription :String , restaurantid:String) -> MultipartFormData.BuildResult? {
+        print("app")
+        print(restaurantid)
 
         let multipartFormData = try? MultipartFormData.Builder.build(
             with: [
@@ -375,7 +294,7 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
                     name: "restaurant_id",
                     filename: nil,
                     mimeType: nil,
-                    data: ProductId.data(using: .utf8)!
+                    data: restaurantid.data(using: .utf8)!
                 ),
                 (
                     name: "description",

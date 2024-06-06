@@ -27,7 +27,7 @@ class DataControlller{
     func setID( id:String){
         _currentUser.id = id
         _restaurant.user = id
-        _product.restaurant_id = id
+//        _product.restaurant_id = id
     }
     
   
@@ -47,6 +47,9 @@ class DataControlller{
     }
     func set_restaurant_cuisine(cuisine:String){
         _restaurant.cuisine = cuisine
+    }
+    func set_Restaurant_Id(id:String){
+        _restaurant.id = id
     }
     
     

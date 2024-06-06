@@ -183,6 +183,7 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
             }else{
                 currentProduct.availability = false
             }
+        
             
             newProduct = currentProduct
             
@@ -196,7 +197,7 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
         
         
         
-        if let formData = updateFormAppData(image:sourceVC.currentProduct.product_photo!, ProductName: sourceVC.Product_Name.text! , prepTime: Int(sourceVC.Product_ExtraTime.text!)! ,productPrice: Int(sourceVC.Product_Price.text!)! , ProductCategory: sourceVC.Product_Category.text! , ProductDescription: sourceVC.Product_Description.text!   , restaurant_id: sourceVC.currentProduct.restaurant_id ) {
+        if let formData = updateFormAppData(image:sourceVC.currentProduct.product_photo!, ProductName: sourceVC.Product_Name.text! , prepTime: Int(sourceVC.Product_ExtraTime.text!)! ,productPrice: Int(sourceVC.Product_Price.text!)! , ProductCategory: sourceVC.Product_Category.text! , ProductDescription: sourceVC.Product_Description.text!   , restaurant_id: sourceVC.currentProduct.restaurant_id , featured_Item: (sourceVC.Product_featured != nil)) {
             
         debugPrint("done button")
             var request = URLRequest(url: URL(string: "https://trout-worst-halloween-palmer.trycloudflare.com/update-food/\(currentProduct._id)")!)
@@ -226,7 +227,7 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
         
    
            
-    func updateFormAppData(image: UIImage ,  ProductName: String, prepTime: Int , productPrice:Int , ProductCategory:String ,ProductDescription :String ,restaurant_id :String ) -> MultipartFormData.BuildResult? {
+    func updateFormAppData(image: UIImage ,  ProductName: String, prepTime: Int , productPrice:Int , ProductCategory:String ,ProductDescription :String ,restaurant_id :String  ,featured_Item :Bool ) -> MultipartFormData.BuildResult? {
 
 
         let multipartFormData = try? MultipartFormData.Builder.build(
@@ -260,6 +261,12 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
                     filename: nil,
                     mimeType: nil,
                     data: "\(prepTime)".data(using: .utf8)!
+                ),
+                (
+                    name: "featured_Item",
+                    filename: nil,
+                    mimeType: nil,
+                    data: "\(featured_Item)".data(using: .utf8)!
                 ),
                 (
                     name: "product_price",

@@ -68,6 +68,7 @@ import Foundation
 import UIKit
 
 struct Restaurant: Codable {
+    var id:String = ""
     var user: String = ""
     var restaurant_Name: String = ""
     var banner_photo: UIImage?
@@ -78,6 +79,7 @@ struct Restaurant: Codable {
     var rating: Double = 0.0
 
     enum CodingKeys: String, CodingKey {
+        case id = "_id"
         case user
         case restaurant_Name
         case bannerPhoto64Image
