@@ -11,15 +11,7 @@ import UIKit
 
 struct Product :Codable {
     var _id:String = ""
-    var product_photo: UIImage? {
-        didSet {
-            if let image = product_photo {
-                product_photo64Image = image.pngData()?.base64EncodedString() ?? ""
-            } else {
-                product_photo64Image = ""
-            }
-        }
-    }
+    var product_photo: UIImage?
     var product_photo64Image: String = ""
     var restaurant_id: String = ""
     var product_name: String = ""

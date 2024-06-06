@@ -73,6 +73,7 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
     @IBOutlet var Preparation_Time: UITextField!
     @IBOutlet var Product_Price: UITextField!
     @IBOutlet var Product_Description: UITextField!
+    @IBOutlet var productCategory: UITextField!
     
     
     
@@ -99,15 +100,15 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         
         
         
-        let cuisine = selectedRowAt // Assuming this is a single selected cuisine
+//        let cuisine = selectedRowAt  Assuming this is a single selected cuisine
 
           // Create form data
-        print(currentImage?.image , Restaurant_Name.text , selectedRowAt )
+//        print(currentImage?.image , Restaurant_Name.text , selectedRowAt )
         if let formData = createFormData(image: (currentImage?.image)!, restaurantName: Restaurant_Name.text!, cuisines: selectedRowAt, estimatedTime: Int(EstimatedTime.text!)!) {
             
             debugPrint(formData)
             print("cxecwe")
-              var request = URLRequest(url: URL(string: "https://rev-ee-gates-added.trycloudflare.com/register-restaurant")!)
+              var request = URLRequest(url: URL(string: "https://trout-worst-halloween-palmer.trycloudflare.com/register-restaurant")!)
               request.httpMethod = "POST"
 //            let boundary =
 //              request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -246,20 +247,44 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         DataControlller.shared.set_prepTime(time : Double(Preparation_Time.text!) ?? 0)
         DataControlller.shared.set_product_image(image: (currentImage?.image!)!)
         DataControlller.shared.set_product_price(price: Int(Product_Price.text!) ?? 0)
-        DataControlller.shared.set_product_category(category:"Veg" )
+        DataControlller.shared.set_product_category(category:(productCategory.text!) )
         DataControlller.shared.set_product_description(description: Product_Description.text ?? "Veg")
         DataControlller.shared.set_products_resturation_id(id: DataControlller.shared.restaurant.user)
         
         
+        if let formData = createFormAppData(image: (currentImage?.image)!, ProductName: Product_Name.text! , prepTime: Int(Preparation_Time.text!)! ,productPrice: Int(Product_Price.text!)! , ProductCategory: productCategory.text! , ProductDescription: Product_Description.text!  , ProductId: DataControlller.shared.restaurant.user  ) {
+            
+            debugPrint(formData)
+            print("cxecwe")
+              var request = URLRequest(url: URL(string: "https://trout-worst-halloween-palmer.trycloudflare.com/create-product")!)
+              request.httpMethod = "POST"
+//            let boundary =
+//              request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+////            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+////                request.setValue("application/json", forHTTPHeaderField: "Accept")
+            ///
         
-        Task.init(){
-                 do{
-                    try await  sendProductData(product: DataControlller.shared.product)
-                 }
-             }
-         }
-    
-    
+            request.setValue(formData.contentType, forHTTPHeaderField: "Content-Type")
+
+            request.httpBody = formData.body
+
+              URLSession.shared.dataTask(with: request) { (data, response, error) in
+                  if let error = error {
+                      print("Error: \(error.localizedDescription)")
+                      return
+                  }
+                  // Handle response
+                  if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                      print("Response: \(responseString)")
+                  }
+              }.resume()
+          } else {
+              print("Failed to create form data.")
+          }
+      }
+        
+        
+ 
     
     
     
@@ -302,55 +327,84 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     func createFormData(image: UIImage, restaurantName: String, cuisines: String, estimatedTime: Int) -> MultipartFormData.BuildResult? {
-//        let boundary = UUID().uuidString
-//        var formData = Data()
-//
-//        formData.append("--\(boundary)\r\n")
-//        formData.append("Content-Disposition: form-data; name=\"restaurantName\"\r\n\r\n")
-//        formData.append("\(restaurantName)\r\n")
-//
-//        if let imageData = image.jpegData(compressionQuality: 1.0) {
-//            formData.append("--\(boundary)\r\n")
-//            formData.append("Content-Disposition: form-data; name=\"restaurantImage\"; filename=\"restaurant.jpg\"\r\n")
-//            formData.append("Content-Type: image/jpeg\r\n\r\n")
-//            formData.append(imageData)
-//            formData.append("\r\n")
-//        }
-//
-//        formData.append("--\(boundary)\r\n")
-//        formData.append("Content-Disposition: form-data; name=\"cuisines\"\r\n\r\n")
-//        formData.append("\(cuisines)\r\n")
-//
-//        formData.append("--\(boundary)\r\n")
-//        formData.append("Content-Disposition: form-data; name=\"estimatedTime\"\r\n\r\n")
-//        formData.append("\(estimatedTime)\r\n")
-//
-//        formData.append("--\(boundary)--\r\n")
-//
-//        return formData
-        
+
+
         let multipartFormData = try? MultipartFormData.Builder.build(
             with: [
                 (
                     name: "restaurant_Name",
                     filename: nil,
                     mimeType: nil,
-                    data: "Hello, World!".data(using: .utf8)!
+                    data: restaurantName.data(using: .utf8)!
                 ),
                 (
                     name: "cuisines",
                     filename: nil,
                     mimeType: nil,
-                    data: "ccc".data(using: .utf8)!
+                    data: cuisines.data(using: .utf8)!
                 ),
                 (
                     name: "estimatedTime",
                     filename: nil,
                     mimeType: nil,
-                    data: "17".data(using: .utf8)!
+                    data: "\(estimatedTime)".data(using: .utf8)!
                 ),
                 (
                     name: "bannerPhoto64Image",
+                    filename: "example.jpeg",
+                    mimeType: MIMEType.imageJpeg,
+                    data: image.jpegData(compressionQuality: 0.1)!
+                ),
+            ],
+            willSeparateBy: RandomBoundaryGenerator.generate()
+        )
+        
+        return multipartFormData
+    }
+    
+    func createFormAppData(image: UIImage, ProductName: String, prepTime: Int , productPrice:Int , ProductCategory:String ,ProductDescription :String , ProductId:String) -> MultipartFormData.BuildResult? {
+
+
+        let multipartFormData = try? MultipartFormData.Builder.build(
+            with: [
+                (
+                    name: "product_name",
+                    filename: nil,
+                    mimeType: nil,
+                    data: ProductName.data(using: .utf8)!
+                ),
+                (
+                    name: "restaurant_id",
+                    filename: nil,
+                    mimeType: nil,
+                    data: ProductId.data(using: .utf8)!
+                ),
+                (
+                    name: "description",
+                    filename: nil,
+                    mimeType: nil,
+                    data: ProductDescription.data(using: .utf8)!
+                ),
+                (
+                    name: "food_category",
+                    filename: nil,
+                    mimeType: nil,
+                    data: ProductCategory.data(using: .utf8)!
+                ),
+                (
+                    name: "extraTime",
+                    filename: nil,
+                    mimeType: nil,
+                    data: "\(prepTime)".data(using: .utf8)!
+                ),
+                (
+                    name: "product_price",
+                    filename: nil,
+                    mimeType: nil,
+                    data: "\(productPrice)".data(using: .utf8)!
+                ),
+                (
+                    name: "product_photo64Image",
                     filename: "example.jpeg",
                     mimeType: MIMEType.imageJpeg,
                     data: image.jpegData(compressionQuality: 0.1)!

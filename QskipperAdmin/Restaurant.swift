@@ -68,17 +68,9 @@ import Foundation
 import UIKit
 
 struct Restaurant: Codable {
-    var user: String = "66602e9d8e3836eb7093eeda"
+    var user: String = ""
     var restaurant_Name: String = ""
-    var banner_photo: UIImage? {
-        didSet {
-            if let image = banner_photo {
-                bannerPhoto64Image = image.pngData()?.base64EncodedString() ?? ""
-            } else {
-                bannerPhoto64Image = ""
-            }
-        }
-    }
+    var banner_photo: UIImage?
     var bannerPhoto64Image: String = ""
     var cuisine: String = ""
     var estimatedTime: Int = 10
@@ -95,33 +87,33 @@ struct Restaurant: Codable {
         case rating
     }
 
-    init() {}
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        user = try container.decode(String.self, forKey: .user)
-        restaurant_Name = try container.decode(String.self, forKey: .restaurant_Name)
-        bannerPhoto64Image = try container.decode(String.self, forKey: .bannerPhoto64Image)
-        cuisine = try container.decode(String.self, forKey: .cuisine)
-        estimatedTime = try container.decode(Int.self, forKey: .estimatedTime)
-        dish = try container.decode([Dish].self, forKey: .dish)
-        rating = try container.decode(Double.self, forKey: .rating)
-        
-        if let imageData = Data(base64Encoded: bannerPhoto64Image) {
-            banner_photo = UIImage(data: imageData)
-        }
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(user, forKey: .user)
-        try container.encode(restaurant_Name, forKey: .restaurant_Name)
-        try container.encode(bannerPhoto64Image, forKey: .bannerPhoto64Image)
-        try container.encode(cuisine, forKey: .cuisine)
-        try container.encode(estimatedTime, forKey: .estimatedTime)
-        try container.encode(dish, forKey: .dish)
-        try container.encode(rating, forKey: .rating)
-    }
+//    init() {}
+//
+//    init(from decoder: Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        user = try container.decode(String.self, forKey: .user)
+//        restaurant_Name = try container.decode(String.self, forKey: .restaurant_Name)
+//        bannerPhoto64Image = try container.decode(String.self, forKey: .bannerPhoto64Image)
+//        cuisine = try container.decode(String.self, forKey: .cuisine)
+//        estimatedTime = try container.decode(Int.self, forKey: .estimatedTime)
+//        dish = try container.decode([Dish].self, forKey: .dish)
+//        rating = try container.decode(Double.self, forKey: .rating)
+//        
+//        if let imageData = Data(base64Encoded: bannerPhoto64Image) {
+//            banner_photo = UIImage(data: imageData)
+//        }
+//    }
+//
+//    func encode(to encoder: Encoder) throws {
+//        var container = encoder.container(keyedBy: CodingKeys.self)
+//        try container.encode(user, forKey: .user)
+//        try container.encode(restaurant_Name, forKey: .restaurant_Name)
+//        try container.encode(bannerPhoto64Image, forKey: .bannerPhoto64Image)
+//        try container.encode(cuisine, forKey: .cuisine)
+//        try container.encode(estimatedTime, forKey: .estimatedTime)
+//        try container.encode(dish, forKey: .dish)
+//        try container.encode(rating, forKey: .rating)
+//    }
 }
 
 struct Dish: Codable {

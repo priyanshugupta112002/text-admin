@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ypi-DH-0UT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ewu-sU-qhR">
     <device id="ipad12_9" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
@@ -404,6 +404,7 @@
                         <outlet property="Restaurant_Image" destination="c14-ST-usf" id="fYi-iX-2hU"/>
                         <outlet property="Restaurant_Name" destination="QSa-gv-kfe" id="bC9-jc-Eov"/>
                         <outlet property="Submit_Information" destination="3Gi-c6-JRk" id="u5p-LR-l8J"/>
+                        <outlet property="productCategory" destination="icY-0i-hiV" id="YzU-wW-KVf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UV0-V8-3v6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
