@@ -440,7 +440,9 @@
                         <outlet property="Restaurant_Image" destination="c14-ST-usf" id="fYi-iX-2hU"/>
                         <outlet property="Restaurant_Name" destination="QSa-gv-kfe" id="bC9-jc-Eov"/>
                         <outlet property="Submit_Information" destination="3Gi-c6-JRk" id="u5p-LR-l8J"/>
+                        <outlet property="addButton" destination="tHa-xh-wBD" id="yB7-7y-qdf"/>
                         <outlet property="productCategory" destination="icY-0i-hiV" id="v40-QN-Qda"/>
+                        <outlet property="submitButton" destination="3Gi-c6-JRk" id="Tou-rw-kqf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UV0-V8-3v6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

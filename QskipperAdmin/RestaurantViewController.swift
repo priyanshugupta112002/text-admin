@@ -63,9 +63,14 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
     
     var currentImage :UIImageView?
     
-
     
     
+    @IBOutlet var submitButton: UIButton!
+    
+    
+    @IBOutlet var addButton: UIButton!
+    
+   
     
     
     @IBOutlet var Product_Name: UITextField!
@@ -76,7 +81,18 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
     @IBOutlet var productCategory: UITextField!
     
     
-    
+    func showAlert(message: String) {
+               let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
+               alert.addAction(UIAlertAction(title: "OK", style: .default))
+               present(alert, animated: true)
+           }
+
+        func animateButton(_ button: UIButton) {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.1, options: [], animations: {
+                button.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
+                button.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            }, completion: nil)
+        }
    
     
     
@@ -87,12 +103,13 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         Restaurant_Cusinie.dataSource = self
         
 //        Restaurant_Name.text = DataControlller.shared.restaurant.restaurant_Name
-        
-        
+       
     }
     
+    
+    
     @IBAction func OnSubmit(_ sender: UIButton) {
-        
+        animateButton(sender)
         DataControlller.shared.set_restaurant(name: Restaurant_Name.text!)
         DataControlller.shared.set_restaurant_banner(image: (currentImage?.image)!)
         DataControlller.shared.set_restaurant_cuisine(cuisine: selectedRowAt)
@@ -107,7 +124,7 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
         if let formData = createFormData(image: (currentImage?.image)!, restaurantName: Restaurant_Name.text!, cuisines: selectedRowAt, estimatedTime: Int(EstimatedTime.text!)!  , userId :DataControlller.shared.Currentuser.id) {
             
       
-              var request = URLRequest(url: URL(string: "https://trout-worst-halloween-palmer.trycloudflare.com/register-restaurant")!)
+              var request = URLRequest(url: URL(string: "https://queueskipperbackend.onrender.com/register-restaurant")!)
               request.httpMethod = "POST"
 
         
@@ -125,13 +142,22 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
                       
                       print(responseString)
                       print("cewcwec")
+                     
+                      
                       DataControlller.shared.set_Restaurant_Id(id: responseString)
                       
+                      
+                      DispatchQueue.main.async {
+                                         self.showAlert(message: "Restaurant Success!")
+                                     }
                   }
               }.resume()
           } else {
               print("Failed to create form data.")
           }
+        
+       
+            
       }
         
         
@@ -140,6 +166,7 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
     
     
     @IBAction func Upload_Banner_Photo(_ sender: UIButton) {
+        
         
         if(sender.tag == 0){
             currentImage = Restaurant_Image
@@ -194,7 +221,8 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
     
 
      
-    @IBAction func Add_Product(_ sender: Any) {
+    @IBAction func Add_Product(_ sender: UIButton) {
+        animateButton(sender)
         print(DataControlller.shared.Currentuser)
         
         DataControlller.shared.set_product_name(name: Product_Name.text ?? "product")
@@ -211,7 +239,7 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
             debugPrint(DataControlller.shared.restaurant.restaurant_Name)
             debugPrint(DataControlller.shared.restaurant.id )
             print("cxecwe")
-              var request = URLRequest(url: URL(string: "https://trout-worst-halloween-palmer.trycloudflare.com/create-product")!)
+              var request = URLRequest(url: URL(string: "https://queueskipperbackend.onrender.com/create-product")!)
               request.httpMethod = "POST"
 
             request.setValue(formData.contentType, forHTTPHeaderField: "Content-Type")
@@ -227,6 +255,10 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
                   if let data = data, let responseString = String(data: data, encoding: .utf8) {
                       print("Response: \(responseString)")
                   }
+                  DispatchQueue.main.async {
+                                     self.showAlert(message: "Product Added!")
+                                 }
+                 
               }.resume()
           } else {
               print("Failed to create form data.")
