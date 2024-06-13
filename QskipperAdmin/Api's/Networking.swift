@@ -59,7 +59,7 @@ class Networking {
     }
     
     
-    func loginUser(currentUser:user) async throws ->User?{
+    func loginUser(currentUser:user) async throws ->UserResponse?{
         let registerUrl = baseUrl.appendingPathComponent("login")
         var request = URLRequest(url:registerUrl)
         
@@ -85,7 +85,7 @@ class Networking {
             throw NetworkingError.userNotRegister
         }
         let decoder = JSONDecoder()
-        let userResponse = try decoder.decode(User.self, from: data)
+        let userResponse = try decoder.decode(UserResponse.self, from: data)
         print(userResponse)
         print("ccwdcd")
         

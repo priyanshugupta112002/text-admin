@@ -98,12 +98,31 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        Product_Description.placeholder = "Enter The Description Of The Product"
+
         Restaurant_Cusinie.delegate = self
         Restaurant_Cusinie.dataSource = self
         
+
 //        Restaurant_Name.text = DataControlller.shared.restaurant.restaurant_Name
        
+
+
+        
+        if  DataControlller.shared.restaurant.restaurant_Name != ""{
+            Restaurant_Name.text = DataControlller.shared.restaurant.restaurant_Name
+        
+//        }else if   DataControlller.shared.restaurant.cuisine != ""{
+//            Res.text = DataControlller.shared.restaurant.cuisine
+        }
+        if  DataControlller.shared.restaurant.estimatedTime != 0{
+
+            EstimatedTime.text = "\(DataControlller.shared.restaurant.estimatedTime)"
+        }
+        
+        Restaurant_Name.text = DataControlller.shared.restaurant.restaurant_Name
+        
+        
+
     }
     
     
@@ -405,11 +424,7 @@ class RestaurantViewController: UIViewController, UIImagePickerControllerDelegat
 //
 //        return formData
 //    }
-//
-//    
-//    
-//    
-//    
+//  
 }
     
 

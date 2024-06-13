@@ -22,7 +22,8 @@ class productApi{
     
     
     func getAllProduct() async throws -> [Product] {
-        let productUrl = baseUrl.appendingPathComponent("get_all_product/\(DataControlller.shared.product.restaurant_id)")
+
+        let productUrl = baseUrl.appendingPathComponent("get_all_product/\(DataControlller.shared.restaurant.id)")
         let request = URLRequest(url:productUrl)
         
         let(data , response) = try await URLSession.shared.data(for: request)
@@ -80,42 +81,64 @@ class productApi{
             
         }
     
+    
+    func getAllOrder() async throws -> orderResponse {
+
+        let productUrl = baseUrl.appendingPathComponent("get-order/\(DataControlller.shared.Currentuser.id)")
+        let request = URLRequest(url:productUrl)
         
+        let(data , response) = try await URLSession.shared.data(for: request)
         
-//        func updateImformation(currentproduct:Product) async throws {
-//            let registerUrl = baseUrl.appendingPathComponent("update-photo")
-//            var request = URLRequest(url:registerUrl)
-//            var item = currentproduct
-//            request.httpMethod = "POST"
-//            
-//            request.setValue("application/json", forHTTPHeaderField:  "Content-Type")
-//            
-//            let jsonEncoder = JSONEncoder()
-//            let jsonData = try? jsonEncoder.encode(item)
-//            request.httpBody = jsonData
-//            
-//            let(data , response) = try await URLSession.shared.data(for: request)
-//            
-//            
-//            if let string = String(data: data, encoding: .utf8)
-//            {
-//                debugPrint(string)
-//            }
-//            
-//            guard let httpResponse = response as? HTTPURLResponse,
-//                  httpResponse.statusCode == 202 else{
-//                
-//                throw productApiError.productCanNotUpdated
-//            }
-//            let decoder = JSONDecoder()
-//            let userResponse = try decoder.decode(User.self, from: data)
-//            print(userResponse)
-//            print("ccwdcd")
-//            
-//            
-//        }
+        if let string = String(data: data, encoding: .utf8)
+        {
+//            debugPrint(string)
+            debugPrint("get all product")
+        }
         
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 202 else{
+            
+            throw productApiError.productNotFound
+            
+        }
+        let decoder = JSONDecoder()
+        let userResponse = try decoder.decode(orderResponse.self, from: data)
         
+        debugPrint(userResponse)
+        
+        return userResponse
+    }
+ 
+    
+    func OrderComplete() async throws {
+
+        let productUrl = baseUrl.appendingPathComponent("order-complete/\(DataControlller.shared.Currentuser.id)/1234")
+        let request = URLRequest(url:productUrl)
+        
+        let(data , response) = try await URLSession.shared.data(for: request)
+        
+        if let string = String(data: data, encoding: .utf8)
+        {
+//            debugPrint(string)
+            debugPrint("get all product")
+        }
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 202 else{
+            
+            throw productApiError.productNotFound
+            
+        }
+        let decoder = JSONDecoder()
+        let userResponse = try decoder.decode(orderResponse.self, from: data)
+        
+        debugPrint(userResponse)
+     
+    }
+    
+    
+    
+  
     }
     
     

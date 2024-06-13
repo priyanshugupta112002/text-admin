@@ -20,6 +20,10 @@ class DataControlller{
     
     private var _product = Product()
     
+    private var _orderResponse = orderResponse()
+    
+
+    
     
     var Currentuser : user{
         return _currentUser
@@ -30,7 +34,15 @@ class DataControlller{
 //        _product.restaurant_id = id
     }
     
-  
+    func reset(){
+        _currentUser.id = ""
+        _restaurant.user = ""
+        _restaurant.id = ""
+        _allProduct.removeAll()
+        _restaurant.restaurant_Name = ""
+        _restaurant.estimatedTime = 0
+        
+    }
     
     var restaurant :Restaurant {
         return _restaurant
@@ -50,6 +62,9 @@ class DataControlller{
     }
     func set_Restaurant_Id(id:String){
         _restaurant.id = id
+    }
+    func set_restaurant_estimatedTime(estimatedTime:Int){
+        _restaurant.estimatedTime = estimatedTime
     }
     
     
@@ -114,6 +129,17 @@ class DataControlller{
     
     
     
+
+    // order Response
+    var orderRes : orderResponse{
+        return _orderResponse
+    }    
+    func set_orderResponse(getAllorder:orderResponse){
+        _orderResponse = getAllorder
+    }
+    func get_orderItem_Count(){
+        _orderResponse.order[0].items.count
+    }
     
     
 }

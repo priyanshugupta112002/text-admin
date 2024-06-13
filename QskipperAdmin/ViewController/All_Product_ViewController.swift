@@ -88,7 +88,6 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
             if let url = URL(string: "https://queueskipperbackend.onrender.com/get_product_photo/\(DataControlller.shared.get_product_row(index: indexPath.row)._id)"){
                 
                 if let image = try? await productApi.shared.fetchImage(from: url){
-                   debugPrint("xwxwee")
                     debugPrint(image)
                     DataControlller.shared.set_product_image(index: indexPath.row, image: image)
                     
@@ -111,25 +110,51 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
     
    
     
-    func generateLayout () -> UICollectionViewLayout{
-        
-        let layout = UICollectionViewCompositionalLayout{
-            (section,env) -> NSCollectionLayoutSection? in
+//    func generateLayout () -> UICollectionViewLayout{
+//
+//        let layout = UICollectionViewCompositionalLayout{
+//            (section,env) -> NSCollectionLayoutSection? in
+//
+//
+//            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.3), heightDimension: .fractionalHeight(1))
+//            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+//
+//            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(0.9))
+//
+//            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 3 )
+//
+//            let secction = NSCollectionLayoutSection(group: group)
+//            return secction
+//
+//        }
+//        return layout
+//
+//    }
+    
+    func generateLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewCompositionalLayout { (section, env) -> NSCollectionLayoutSection? in
             
-        
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.3), heightDimension: .fractionalHeight(1))
+            let itemSpacing: CGFloat = 20 // Define the spacing between items
+            let itemsPerRow: CGFloat = 4
+            let totalSpacing = itemSpacing * (itemsPerRow - 1)
+            
+            let itemWidth = (env.container.effectiveContentSize.width - totalSpacing) / itemsPerRow
+            
+            let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(itemWidth), heightDimension: .absolute(itemWidth))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
             
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(0.9))
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(itemWidth))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: Int(itemsPerRow))
+            group.interItemSpacing = .fixed(itemSpacing)
             
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 3 )
+            let section = NSCollectionLayoutSection(group: group)
+            section.interGroupSpacing = itemSpacing
+            section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
             
-            let secction = NSCollectionLayoutSection(group: group)
-            return secction
-            
+            return section
         }
         return layout
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -200,7 +225,7 @@ class All_Product_ViewController: UIViewController , UICollectionViewDataSource 
         if let formData = updateFormAppData(image:sourceVC.currentProduct.product_photo!, ProductName: sourceVC.Product_Name.text! , prepTime: Int(sourceVC.Product_ExtraTime.text!)! ,productPrice: Int(sourceVC.Product_Price.text!)! , ProductCategory: sourceVC.Product_Category.text! , ProductDescription: sourceVC.Product_Description.text!   , restaurant_id: sourceVC.currentProduct.restaurant_id , featured_Item: (sourceVC.Product_featured != nil)) {
             
         debugPrint("done button")
-            var request = URLRequest(url: URL(string: "https://trout-worst-halloween-palmer.trycloudflare.com/update-food/\(currentProduct._id)")!)
+            var request = URLRequest(url: URL(string: "https://queueskipperbackend.onrender.com/update-food/\(currentProduct._id)")!)
               request.httpMethod = "PUT"
         
             request.setValue(formData.contentType, forHTTPHeaderField: "Content-Type")

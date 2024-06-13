@@ -1,66 +1,4 @@
-////
-////  Restaurant.swift
-////  QskipperAdmin
-////
-////  Created by Batch-1 on 24/05/24.
-////
-//
-//import Foundation
-//import UIKit
-//
-////class MyImage:UIImage,Codable{
-////    override func `self`() -> Self {
-////        return self
-////    }
-////}
-//
-//
-//struct Restaurant :Codable {
-//    var user : String = ""
-//    var restaurant_Name :String = ""
-//    var banner_photo: UIImage? {
-//           didSet {
-//               if let image = banner_photo {
-//                   bannerPhoto64Image = image.pngData()?.base64EncodedString() ?? ""
-//               } else {
-//                   bannerPhoto64Image = ""
-//               }
-//           }
-//       }
-//    var bannerPhoto64Image :String =  ""
-//    var cuisine : String = ""
-//    var estimatedTime :Int  = 10
-//    var dish: [Dish] = []
-//    var rating: Double = 0.0
-//
-//    enum Coding : String,CodingKey{
-//        case id = "_id"
-//        
-//        
-//    }
-//    
-//}
-//
-//
-//struct Dish :Codable {
-//    var image: String
-//    var name: String
-//    var description: String
-//    var price: Int
-//    var rating: Double
-//    var foodType: String
-//    
-//    enum Coding :String , CodingKey{
-//        case name
-//        
-//    }
-//}
-//
-//
-//
-//
-//var Cuisine:[String] = ["North India" , "South Indian" , "Chinesse" , "Fast Food"]
-//
+
 
 
 
@@ -136,4 +74,4 @@ struct Dish: Codable {
     }
 }
 
-var Cuisine: [String] = ["North India", "South Indian", "Chinese", "Fast Food"]
+var Cuisine: [String] = ["North India", "South Indian", "Chinese", "Fast Food" , "Drinks & Snacks"]
