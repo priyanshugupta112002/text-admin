@@ -13,7 +13,7 @@ struct user: Codable  {
     var id :String = ""
     var email: String = ""
     var password: String = ""
-    var securityCode: String = ""
+    var securityCode: String = "0"
 }
 
 

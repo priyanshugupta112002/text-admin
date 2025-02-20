@@ -37,7 +37,7 @@ class LoginAndRegisterViewController: UIViewController {
              let email = userRegisterEmailId.text!
              let password = userRegisterPassword.text!
              let securityCode = userRegisterSecurityCode.text!
-
+            
              // Create a User instance
             let currentUser = user(email: email, password: password, securityCode: securityCode)
             
@@ -68,10 +68,10 @@ class LoginAndRegisterViewController: UIViewController {
             let userPassword = userLoginPassword.text!
             
             let currentUser = user(email: userName , password: userPassword)
-            
+    
             do {
                 // login  user
-               
+              
                 if let response = try await Networking.shared.loginUser(currentUser: currentUser) {
                     if (response.restaurantid != ""){
                         DataControlller.shared.set_Restaurant_Id(id: response.restaurantid)
